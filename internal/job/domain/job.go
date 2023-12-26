@@ -29,8 +29,8 @@ type Porter struct {
 }
 
 type Job struct {
-	Version  int
 	Id       JobId
+	Version  int
 	Status   JobStatus
 	Accepted bool
 	Location Location
@@ -38,4 +38,18 @@ type Job struct {
 	Porter   Porter
 	CheckIn  time.Time
 	CheckOut time.Time
+}
+
+func CreateNewJob(location Location, patient Patient) *Job {
+	return &Job{
+		Status:   Pending,
+		Location: location,
+		Patient:  patient,
+	}
+}
+
+func AcceptJob(job *Job, porter Porter) {
+	job.Status = Accepted
+	job.Porter = porter
+	job.Accepted = true
 }
