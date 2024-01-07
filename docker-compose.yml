@@ -1,0 +1,76 @@
+version: "3.5"
+
+services:
+  job-mongodb:
+    container_name: job-mongodb
+    image: bitnami/mongodb:5.0
+    restart: always
+    networks:
+      - default
+    environment:
+      MONGODB_ROOT_USERNAME: root
+      MONGODB_ROOT_PASSWORD: admin
+    ports:
+      - '27017:27017'
+
+  job-mongodb-admin:
+    container_name: job-mongodb-admin
+    image: mongo-express:0.54
+    restart: always
+    depends_on:
+      - job-mongodb
+    networks:
+      - default
+    environment:
+      ME_CONFIG_MONGODB_SERVER: job-mongodb
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+    ports:
+      - '5000:8081'
+  # message broker - zookeeper
+  # reference: https://github.com/bitnami/bitnami-docker-kafka/blob/master/docker-compose.yml
+  zookeeper:
+    image: 'bitnami/zookeeper:3.7'
+    restart: always
+    container_name: zookeeper
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: 'yes'
+    networks:
+      - default
+
+  # message broker - kafka
+  # reference: https://github.com/bitnami/bitnami-docker-kafka/blob/master/docker-compose.yml
+  kafka:
+    image: 'bitnami/kafka:latest'
+    restart: always
+    container_name: kafka
+    environment:
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: 'yes'
+    ports:
+      - '9092:9092'
+    networks:
+      - default
+    depends_on:
+      - zookeeper
+
+  # message broker - kafka ui
+  # reference: https://github.com/cloudhut/kowl/tree/master/docs/local
+  kowl:
+    image: quay.io/cloudhut/kowl:v1.4.0
+    container_name: kowl
+    restart: always
+    hostname: kowl
+    volumes:
+      - ./kowl.yml:/etc/kowl/config.yaml
+    entrypoint: ./kowl --config.filepath=/etc/kowl/config.yaml
+    ports:
+      - "9999:8080"
+    networks:
+      - default
+    depends_on:
+      - kafka
+
+networks:
+  default:
+    name: MyNetwork
