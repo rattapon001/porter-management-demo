@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"context"
+	"log"
 	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -38,14 +39,14 @@ func MongoDbInit() *mongo.Client {
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
 
 	client, err := mongo.Connect(context.TODO(), opts)
+
+	err = client.Ping(context.Background(), nil)
+	if err != nil {
+		log.Fatal("Failed to connect to MongoDB:", err)
+	}
 	if err != nil {
 		panic(err)
 	}
-	defer func() {
-		if err = client.Disconnect(context.TODO()); err != nil {
-			panic(err)
-		}
-	}()
 
 	return client
 }

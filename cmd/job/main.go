@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -21,5 +22,10 @@ func main() {
 	router := gin.Default()
 	port := "8080"
 	jobRouter.InitJobRouter(router, db)
+	defer func() {
+		if err = db.Disconnect(context.TODO()); err != nil {
+			panic(err)
+		}
+	}()
 	router.Run(":" + port)
 }
