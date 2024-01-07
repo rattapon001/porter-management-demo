@@ -49,3 +49,8 @@ func (r *JobMongoRepository) FindAll() ([]*domain.Job, error) {
 	}
 	return jobs, nil
 }
+
+func (r *JobMongoRepository) Delete(job *domain.Job) error {
+	_, err := r.Collection.DeleteOne(context.Background(), domain.Job{Id: job.Id})
+	return err
+}
