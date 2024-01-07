@@ -1,13 +1,25 @@
 package main
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	jobRouter "github.com/rattapon001/porter-management-demo/api/v1/routers/job"
+	"github.com/rattapon001/porter-management-demo/internal/job/infra/mongo"
 )
 
+const dbUrl = "mongodb://root:admin@localhost:27017"
+
 func main() {
+
+	err := godotenv.Load("./configs/local.env")
+	if err != nil {
+		log.Fatalf("Some error occured. Err: %s", err)
+	}
+	db := mongo.MongoDbInit()
 	router := gin.Default()
 	port := "8080"
-	jobRouter.InitJobRouter(router)
+	jobRouter.InitJobRouter(router, db)
 	router.Run(":" + port)
 }
