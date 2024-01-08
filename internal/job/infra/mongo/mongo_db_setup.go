@@ -40,12 +40,13 @@ func MongoDbInit() *mongo.Client {
 
 	client, err := mongo.Connect(context.TODO(), opts)
 
+	if err != nil {
+		panic(err)
+	}
+
 	err = client.Ping(context.Background(), nil)
 	if err != nil {
 		log.Fatal("Failed to connect to MongoDB:", err)
-	}
-	if err != nil {
-		panic(err)
 	}
 
 	return client
