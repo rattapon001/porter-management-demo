@@ -27,7 +27,10 @@ func LoadKafkaConfig() *KafkaConfing {
 
 func CreateKafkaProducer() *kafka.Producer {
 	config := LoadKafkaConfig()
-	p, err := kafka.NewProducer(&kafka.ConfigMap{config.ServerType: config.Host + ":" + config.Port})
+	producerConfig := &kafka.ConfigMap{
+		"bootstrap.servers": config.Host + ":" + config.Port,
+	}
+	p, err := kafka.NewProducer(producerConfig)
 	if err != nil {
 		panic(err)
 	}
