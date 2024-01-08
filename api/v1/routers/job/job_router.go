@@ -22,5 +22,7 @@ func InitJobRouter(router *gin.Engine, db *mongo.Client) {
 	jobRouter := router.Group("/jobs")
 	{
 		jobRouter.POST("/", JobHandler.CreateJob)
+		jobRouter.GET("/", JobHandler.FindAll)
+		jobRouter.GET("/:id", JobHandler.FindById)
 	}
 }
