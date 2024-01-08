@@ -42,15 +42,17 @@ type Job struct {
 	Porter   Porter    `bson:"porter"`
 	CheckIn  time.Time `bson:"check_in"`
 	CheckOut time.Time `bson:"check_out"`
+	Name     string    `bson:"name"`
 }
 
-func CreateNewJob(location Location, patient Patient) *Job {
+func CreateNewJob(location Location, patient Patient, name string) *Job {
 	return &Job{
 		Id:       JobId(uuid.New().String()),
 		Status:   Pending,
 		Location: location,
 		Patient:  patient,
 		Version:  1,
+		Name:     name,
 	}
 }
 
