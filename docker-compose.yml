@@ -26,7 +26,8 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin
     ports:
-      - '5000:8081'
+      - '5001:8081'
+
   # message broker - zookeeper
   # reference: https://github.com/bitnami/bitnami-docker-kafka/blob/master/docker-compose.yml
   zookeeper:
