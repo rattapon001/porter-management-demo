@@ -1,8 +1,7 @@
+.PHONY: build up down
 
-.PHONY: run-job
-run-job:
-	go run cmd/job/main.go
+up: build
+	docker-compose up -d
 
-.PHONY: run-porter
-run-porter:
-	go run cmd/porter/main.go
+down:
+	docker-compose down
