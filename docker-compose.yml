@@ -3,6 +3,7 @@ version: "3.5"
 services:
   job-service:
     container_name: job-service
+    image: job-service:latest
     build:
       context: .
       dockerfile: ./build/job.Dockerfile
@@ -13,6 +14,19 @@ services:
       SERVICE_MODE: dev
     ports:
       - '8080:8080'
+  job-message-relay:
+    container_name: job-message-relay
+    image: job-message-relay:latest
+    build:
+      context: .
+      dockerfile: ./build/message_relay.Dockerfile
+    restart: always
+    networks:
+      - default
+    environment:
+      SERVICE_MODE: dev
+    ports:
+      - '8081:8081'
 
   job-mongodb:
     container_name: job-mongodb
@@ -35,7 +49,8 @@ services:
     restart: always
     depends_on:
       - job-mongodb
-    network_mode: host
+    networks:
+      - default
     environment:
       MONGODB_REPLICA_SET_MODE: secondary
       MONGODB_ADVERTISED_HOSTNAME: job-mongodb-replica0
@@ -43,6 +58,8 @@ services:
       MONGODB_INITIAL_PRIMARY_ROOT_USERNAME: root
       MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD: admin
       MONGODB_REPLICA_SET_KEY: replicasetkey123
+    ports:
+      - '27018:27017'
 
   job-mongodb-admin:
     container_name: job-mongodb-admin
