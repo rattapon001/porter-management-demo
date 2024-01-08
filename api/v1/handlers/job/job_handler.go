@@ -1,7 +1,6 @@
 package job_handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -44,7 +43,6 @@ func (h *JobHandler) CreateJob(c *gin.Context) {
 
 func (h *JobHandler) FindAll(c *gin.Context) {
 	jobs, err := h.JobUsecase.FindAll()
-	fmt.Printf("jobs: %v", jobs)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
