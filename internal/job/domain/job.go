@@ -8,6 +8,7 @@ import (
 
 type JobId string
 type JobStatus int8
+type JobEvent string
 
 const (
 	Pending   JobStatus = 1
@@ -32,6 +33,18 @@ type Porter struct {
 	Name string
 }
 
+const (
+	JobCreated   JobEvent = "jobCreated"
+	JobAccepted  JobEvent = "jobAccepted"
+	JobStarted   JobEvent = "jobStarted"
+	JobCompleted JobEvent = "jobCompleted"
+)
+
+type Event struct {
+	Type JobEvent
+	Data interface{}
+}
+
 type Job struct {
 	Id       JobId     `bson:"_id"`
 	Version  int       `bson:"version"`
@@ -43,6 +56,7 @@ type Job struct {
 	CheckIn  time.Time `bson:"check_in"`
 	CheckOut time.Time `bson:"check_out"`
 	Name     string    `bson:"name"`
+	Event    []Event   `bson:"event"`
 }
 
 func CreateNewJob(location Location, patient Patient, name string) *Job {
@@ -51,7 +65,7 @@ func CreateNewJob(location Location, patient Patient, name string) *Job {
 		Status:   Pending,
 		Location: location,
 		Patient:  patient,
-		Version:  1,
+		Version:  0,
 		Name:     name,
 	}
 }
@@ -60,4 +74,8 @@ func AcceptJob(job *Job, porter Porter) {
 	job.Status = Accepted
 	job.Porter = porter
 	job.Accepted = true
+}
+
+func (j *Job) AppendEvent(event Event) {
+	j.Event = append(j.Event, event)
 }
