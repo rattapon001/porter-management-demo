@@ -1,4 +1,4 @@
-package mongo
+package job_mongo
 
 import (
 	"context"
