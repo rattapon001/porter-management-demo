@@ -40,9 +40,20 @@ const (
 	JobCompleted JobEvent = "jobCompleted"
 )
 
+type EventDataCreated struct {
+	Id       JobId     `bson:"id"`
+	Location Location  `bson:"location"`
+	Patient  Patient   `bson:"patient"`
+	Version  int       `bson:"version"`
+	Name     string    `bson:"name"`
+	Porter   Porter    `bson:"porter"`
+	CheckIn  time.Time `bson:"check_in"`
+	CheckOut time.Time `bson:"check_out"`
+}
+
 type Event struct {
-	Type JobEvent
-	Data interface{}
+	Type JobEvent         `bson:"type"`
+	Data EventDataCreated `bson:"data"`
 }
 
 type Job struct {
@@ -66,7 +77,6 @@ func CreateNewJob(location Location, patient Patient, name string) *Job {
 		Location: location,
 		Patient:  patient,
 		Version:  0,
-		Name:     name,
 	}
 }
 

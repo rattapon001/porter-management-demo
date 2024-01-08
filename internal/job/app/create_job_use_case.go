@@ -4,17 +4,9 @@ import (
 	"github.com/rattapon001/porter-management-demo/internal/job/domain"
 )
 
-type EventDataCreated struct {
-	Id       domain.JobId    `json:"id"`
-	Location domain.Location `json:"location"`
-	Patient  domain.Patient  `json:"patient"`
-	Version  int             `json:"version"`
-	Name     string          `json:"name"`
-}
-
 func (s *JobService) CreateJob(location domain.Location, patient domain.Patient, name string) (*domain.Job, error) {
 	job := domain.CreateNewJob(location, patient, name)
-	eventData := EventDataCreated{
+	eventData := domain.EventDataCreated{
 		Id:       job.Id,
 		Location: job.Location,
 		Patient:  job.Patient,
