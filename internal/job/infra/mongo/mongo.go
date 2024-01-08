@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/rattapon001/porter-management-demo/internal/job/domain"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -29,13 +30,15 @@ func (r *JobMongoRepository) Update(job *domain.Job) error {
 
 func (r *JobMongoRepository) FindById(id domain.JobId) (*domain.Job, error) {
 	var job domain.Job
-	err := r.Collection.FindOne(context.Background(), domain.Job{Id: id}).Decode(&job)
+	filter := bson.D{{Key: "_id", Value: id}}
+	err := r.Collection.FindOne(context.Background(), filter).Decode(&job)
 	return &job, err
 }
 
 func (r *JobMongoRepository) FindAll() ([]*domain.Job, error) {
+	filter := bson.D{}
 	var jobs []*domain.Job
-	cursor, err := r.Collection.Find(context.Background(), domain.Job{})
+	cursor, err := r.Collection.Find(context.Background(), filter)
 	if err != nil {
 		return nil, err
 	}
