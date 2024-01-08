@@ -24,7 +24,7 @@ func (r *JobMongoRepository) Save(job *domain.Job) error {
 }
 
 func (r *JobMongoRepository) Update(job *domain.Job) error {
-	_, err := r.Collection.UpdateOne(context.Background(), domain.Job{Id: job.Id}, job)
+	_, err := r.Collection.UpdateOne(context.Background(), domain.Job{ID: job.ID}, job)
 	return err
 }
 
@@ -54,6 +54,6 @@ func (r *JobMongoRepository) FindAll() ([]*domain.Job, error) {
 }
 
 func (r *JobMongoRepository) Delete(job *domain.Job) error {
-	_, err := r.Collection.DeleteOne(context.Background(), domain.Job{Id: job.Id})
+	_, err := r.Collection.DeleteOne(context.Background(), domain.Job{ID: job.ID})
 	return err
 }

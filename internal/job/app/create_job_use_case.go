@@ -7,7 +7,7 @@ import (
 func (s *JobService) CreateJob(location domain.Location, patient domain.Patient, name string) (*domain.Job, error) {
 	job := domain.CreateNewJob(location, patient, name)
 	eventData := domain.EventDataCreated{
-		Id:       job.Id,
+		ID:       job.ID,
 		Location: job.Location,
 		Patient:  job.Patient,
 		Version:  job.Version,

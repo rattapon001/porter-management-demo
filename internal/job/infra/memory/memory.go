@@ -19,7 +19,7 @@ func (r *JobMemoryRepository) Save(job *domain.Job) error {
 
 func (r *JobMemoryRepository) Update(job *domain.Job) error {
 	for i, j := range r.Jobs {
-		if j.Id == job.Id {
+		if j.ID == job.ID {
 			r.Jobs[i] = job
 			return nil
 		}
@@ -29,7 +29,7 @@ func (r *JobMemoryRepository) Update(job *domain.Job) error {
 
 func (r *JobMemoryRepository) FindById(id domain.JobId) (*domain.Job, error) {
 	for _, j := range r.Jobs {
-		if j.Id == id {
+		if j.ID == id {
 			return j, nil
 		}
 	}
@@ -42,7 +42,7 @@ func (r *JobMemoryRepository) FindAll() ([]*domain.Job, error) {
 
 func (r *JobMemoryRepository) Delete(job *domain.Job) error {
 	for i, j := range r.Jobs {
-		if j.Id == job.Id {
+		if j.ID == job.ID {
 			r.Jobs = append(r.Jobs[:i], r.Jobs[i+1:]...)
 			return nil
 		}

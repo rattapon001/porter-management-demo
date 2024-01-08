@@ -41,7 +41,7 @@ const (
 )
 
 type EventDataCreated struct {
-	Id       JobId     `bson:"id"`
+	ID       JobId     `bson:"id"`
 	Location Location  `bson:"location"`
 	Patient  Patient   `bson:"patient"`
 	Version  int       `bson:"version"`
@@ -57,7 +57,7 @@ type Event struct {
 }
 
 type Job struct {
-	Id       JobId     `bson:"_id"`
+	ID       JobId     `bson:"_id,omitempty"`
 	Version  int       `bson:"version"`
 	Status   JobStatus `bson:"status"`
 	Accepted bool      `bson:"accepted"`
@@ -72,7 +72,7 @@ type Job struct {
 
 func CreateNewJob(location Location, patient Patient, name string) *Job {
 	return &Job{
-		Id:       JobId(uuid.New().String()),
+		ID:       JobId(uuid.New().String()),
 		Status:   Pending,
 		Location: location,
 		Patient:  patient,
