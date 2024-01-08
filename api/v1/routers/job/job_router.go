@@ -14,7 +14,7 @@ func InitJobRouter(router *gin.Engine, db *mongo.Client) {
 			"message": "hello job",
 		})
 	})
-	coll := db.Database("porter").Collection("jobs")
+	coll := db.Database("porter_management").Collection("jobs")
 	jobRepository := mongoInfra.NewJobMongoRepository(coll)
 	JobService := app.NewJobService(jobRepository)
 	JobHandler := job_handler.NewJobHandler(JobService)

@@ -1,8 +1,12 @@
 package domain
 
-import "time"
+import (
+	"time"
 
-type JobId int64
+	"github.com/google/uuid"
+)
+
+type JobId string
 type JobStatus int8
 
 const (
@@ -29,22 +33,24 @@ type Porter struct {
 }
 
 type Job struct {
-	Id       JobId
-	Version  int
-	Status   JobStatus
-	Accepted bool
-	Location Location
-	Patient  Patient
-	Porter   Porter
-	CheckIn  time.Time
-	CheckOut time.Time
+	Id       JobId     `bson:"_id"`
+	Version  int       `bson:"version"`
+	Status   JobStatus `bson:"status"`
+	Accepted bool      `bson:"accepted"`
+	Location Location  `bson:"location"`
+	Patient  Patient   `bson:"patient"`
+	Porter   Porter    `bson:"porter"`
+	CheckIn  time.Time `bson:"check_in"`
+	CheckOut time.Time `bson:"check_out"`
 }
 
 func CreateNewJob(location Location, patient Patient) *Job {
 	return &Job{
+		Id:       JobId(uuid.New().String()),
 		Status:   Pending,
 		Location: location,
 		Patient:  patient,
+		Version:  1,
 	}
 }
 
