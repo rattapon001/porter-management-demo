@@ -36,7 +36,7 @@ func MsgRelay(ctx context.Context) {
 			data := changeEvent.FullDocument.Event[len(changeEvent.FullDocument.Event)-1]
 			serializedObj, err := json.Marshal(data)
 
-			topic := "your_topic"
+			topic := string(data.Type)
 			message := &kafka.Message{
 				TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 				Value:          serializedObj,
