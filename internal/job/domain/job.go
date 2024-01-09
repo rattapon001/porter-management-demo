@@ -66,11 +66,10 @@ type Job struct {
 	Porter   Porter    `bson:"porter"`
 	CheckIn  time.Time `bson:"check_in"`
 	CheckOut time.Time `bson:"check_out"`
-	Name     string    `bson:"name"`
 	Event    []Event   `bson:"event"`
 }
 
-func CreateNewJob(location Location, patient Patient, name string) *Job {
+func CreateNewJob(location Location, patient Patient) *Job {
 	return &Job{
 		ID:       JobId(uuid.New().String()),
 		Status:   Pending,

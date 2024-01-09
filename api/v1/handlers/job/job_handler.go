@@ -33,8 +33,7 @@ func (h *JobHandler) CreateJob(c *gin.Context) {
 		HN:   job.Patient.HN,
 	}
 
-	name := job.Name
-	newJob, err := h.JobUsecase.CreateJob(location, patient, name)
+	newJob, err := h.JobUsecase.CreateJob(location, patient)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
